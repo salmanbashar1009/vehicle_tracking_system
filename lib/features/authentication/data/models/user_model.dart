@@ -58,14 +58,14 @@ class UserModel extends UserEntity {
     );
   }
 
-//   UserEntity toEntity() {
-//     return UserEntity(
-//       id: id,
-//       email: email,
-//       displayName: displayName,
-//       photoUrl: photoUrl,
-//       role: role,
-//       createdAt: createdAt,
-//     );
-//   }
-// }
+  UserEntity toEntity() {
+    return UserEntity(
+      id: id,
+      email: email,
+      displayName: displayName,
+      photoUrl: photoUrl,
+      role: role,
+      createdAt: createdAt,
+    );
+  }
+}

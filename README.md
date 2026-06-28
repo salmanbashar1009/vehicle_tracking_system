@@ -1,124 +1,468 @@
-```markdown
-# Live Multi-Vehicle GPS Tracking System
+# 🚗 Live Multi-Vehicle GPS Tracking System
 
-A **production-grade Flutter application** for real-time multi-vehicle GPS tracking using **Clean Architecture**, **BLoC**, and **Firebase**.
+A Flutter-based real-time multi-vehicle GPS tracking application developed as an assessment project for **Rio Deep Technologies**.
 
-![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
-![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
-![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
+---
 
-## 🏗️ Architecture
+## 📱 Project Overview
 
-This project strictly follows **Clean Architecture** principles:
+This project demonstrates a complete vehicle tracking platform consisting of two separate interfaces:
 
-- **Domain Layer**: Entities, Repository Abstract Classes, Use Cases (Business Logic)
-- **Data Layer**: Models, Data Sources (Firebase), Repository Implementations
-- **Presentation Layer**: BLoCs (State Management), Screens, Widgets
+* **User Interface** for monitoring vehicles in real time.
+* **Driver Interface** for vehicle management and simulated live location updates.
 
-## 🧩 Core Technologies
+The application follows **Clean Architecture**, uses **BLoC** for state management, and stores data in **Firebase Cloud Firestore** with real-time synchronization.
 
-- **State Management**: `flutter_bloc` + `equatable`
-- **Dependency Injection**: `get_it`
-- **Navigation**: `go_router`
-- **Backend/Firebase**: `cloud_firestore`, `firebase_auth`
-- **Maps**: `flutter_map` + OpenStreetMap
-- **Functional Error Handling**: `dartz` (Either/Left/Right)
+---
 
-## 🚀 Getting Started
+# 📋 Table of Contents
 
-### 1. Prerequisites
+* [Features](#-features)
+* [Project Structure](#-project-structure)
+* [Prerequisites](#-prerequisites)
+* [Firebase Setup](#-firebase-setup)
+* [Installation](#-installation)
+* [Running the Project](#-running-the-project)
+* [Technologies Used](#-technologies-used)
+* [Architecture](#-architecture)
+* [Platform Support](#-platform-support)
+* [User Interface](#-user-interface)
+* [Driver Interface](#-driver-interface)
+* [Vehicle-Driver Relationship](#-vehicle-driver-relationship)
+* [Live Tracking Simulation](#-live-tracking-simulation)
+* [Limitations](#-limitations)
 
-- Flutter SDK >= 3.2.0
-- Firebase Project (Firestore & Auth enabled)
-- Android Studio / VS Code
+---
 
-### 2. Firebase Setup
+# ✨ Features
 
-1. Create a Firebase project at the [Firebase Console](https://console.firebase.google.com).
-2. Enable **Cloud Firestore**.
-3. Enable **Authentication** (Email/Password).
-4. Add your Android/iOS app and download `google-services.json` / `GoogleService-Info.plist`.
-5. Place the config file in the appropriate directory (`android/app/` for Android).
+## User Side
 
-### 3. Installation
+* Dashboard with vehicle statistics
+* Live vehicle tracking on OpenStreetMap
+* Real-time marker updates
+* Search vehicles by driver name
+* Filter vehicles by type
+* Vehicle details bottom sheet
+
+## Driver Side
+
+* Driver registration
+* Vehicle management (Add/Edit)
+* Start/Stop tracking
+* Real-time coordinate updates
+* Personal vehicle dashboard
+
+---
+
+# 📂 Project Structure
+
+```
+lib/
+├── core/
+├── data/
+│   ├── datasources/
+│   ├── models/
+│   └── repositories/
+├── domain/
+│   ├── entities/
+│   ├── repositories/
+│   └── usecases/
+├── presentation/
+│   ├── blocs/
+│   ├── pages/
+│   └── widgets/
+└── injection/
+```
+
+---
+
+# ✅ Prerequisites
+
+Before running the project, make sure you have installed:
+
+* Flutter SDK (>=3.0.0 <4.0.0)
+* Dart SDK
+* Android Studio or VS Code
+* Flutter & Dart plugins
+* Git
+
+---
+
+# 🔥 Firebase Setup
+
+## 1. Create Firebase Project
+
+Create a Firebase project named:
+
+```
+vehicle-tracker-demo
+```
+
+---
+
+## 2. Register App
+
+Add your Android/iOS application.
+
+Example Android package name:
+
+```
+com.riodeep.vehicle_tracker
+```
+
+---
+
+## 3. Download Firebase Configuration
+
+Android:
+
+```
+android/app/google-services.json
+```
+
+iOS:
+
+```
+ios/Runner/GoogleService-Info.plist
+```
+
+---
+
+## 4. Enable Firestore
+
+Navigate to:
+
+```
+Firebase Console
+→ Firestore Database
+→ Create Database
+→ Test Mode
+```
+
+---
+
+## 5. (Optional)
+
+Enable Firebase Authentication if extending the project.
+
+---
+
+# 🚀 Installation
+
+Clone the repository:
 
 ```bash
-# Clone the repository
-git clone <repo-url>
+git clone https://github.com/your-username/vehicle-tracking-system.git
+```
 
-# Navigate to project directory
-cd vehicle_tracking_system
+Move into the project:
 
-# Install dependencies
+```bash
+cd vehicle-tracking-system
+```
+
+Install dependencies:
+
+```bash
 flutter pub get
 ```
 
-### 4. Seed Dummy Data (Optional)
+---
 
-To test the app immediately with simulated vehicles:
+# ▶️ Running the Project
 
-1. Temporarily add a call to `seedDummyData()` inside `main.dart` right after `configureDependencies()`.
-2. Run the app once.
-3. Remove the seed call and hot restart.
-
-The database will now contain sample data.
-
-### 5. Run the App
+Run the application:
 
 ```bash
 flutter run
 ```
 
-## 📱 App Flow
+---
 
-### User Interface
+## Demo Instructions
 
-- **Dashboard**: View stats (Total vehicles, Active tracking, Categories).
-- **Live Map**: View all tracked vehicles on OpenStreetMap with custom emoji markers.
-- **Vehicle List**: Search & filter vehicles by type and driver name.
+To quickly test the application:
 
-### Driver Interface
+1. Launch the app.
+2. Select **Continue as User (Demo)**.
+3. Open the **Live Map**.
+4. If no vehicles appear, press the debug button that executes:
 
-- **Registration**: Register as a driver (Name, Email, Phone).
-- **Dashboard**: View profile, tracking status, and current coordinates.
-- **Vehicle Management**: Add/Edit vehicles, select types (Car, CNG, Motorcycle, etc.).
-- **Tracking**: Start/Stop simulated GPS tracking. Updates coordinates every 3 seconds to Firestore.
-
-## 📂 Project Structure
-
-```text
-lib/
-├── core/                  # Constants, Errors, Themes, Utilities, Services
-├── features/              # Feature-based modules
-│   ├── authentication/
-│   ├── driver/
-│   ├── vehicle/
-│   ├── tracking/
-│   └── map/
-├── injection_container.dart   # Get_it Dependency Injection
-├── router.dart                # GoRouter Configuration
-└── main.dart                  # App Entry Point
+```dart
+SeedData.populateDummyData()
 ```
 
-## 🗺️ Map Integration
+This creates:
 
-- Uses `flutter_map` with **OpenStreetMap** tiles.
-- Markers change color based on tracking status:
-    - **Green** = Live
-    - **Grey** = Offline
-- Bottom sheet displays vehicle & driver details on marker tap.
-- Auto-centers on selected vehicle.
-
-## 📡 Tracking Simulation
-
-Because this is an assessment prototype, actual device GPS is replaced with a simulation engine (`GpsSimulator`):
-
-- Base coordinates: **Dhaka, Bangladesh** (`23.8103, 90.4125`)
-- Updates every **3 seconds** via `Stream.periodic`
-- Adds random variance (`±0.0005`) to latitude/longitude to simulate realistic movement
+* 3 Drivers
+* 5 Vehicles
+* Initial locations
 
 ---
 
-**Made with ❤️ using Flutter & Firebase**
+# 🛠 Technologies Used
+
+| Technology         | Purpose                  |
+| ------------------ | ------------------------ |
+| Flutter            | Cross-platform framework |
+| Dart               | Programming language     |
+| flutter_bloc       | State management         |
+| Equatable          | Value comparison         |
+| GetIt              | Dependency Injection     |
+| Injectable         | DI code generation       |
+| Go Router          | Navigation               |
+| Firebase Firestore | Real-time database       |
+| flutter_map        | Interactive maps         |
+| OpenStreetMap      | Map provider             |
+| latlong2           | Coordinate utilities     |
+| dartz              | Functional programming   |
+| freezed            | Immutable models         |
+| json_serializable  | JSON generation          |
+| build_runner       | Code generation          |
+
+---
+
+# 🏗 Architecture
+
+The project follows **Clean Architecture**.
+
+```
+Presentation
+      │
+      ▼
+Domain
+      │
+      ▼
+Data
+      │
+      ▼
+Firebase Firestore
 ```
 
+The architecture separates:
+
+* UI
+* Business Logic
+* Data Sources
+
+making the project scalable, maintainable, and testable.
+
+---
+
+# 📱 Platform Support
+
+Built with Flutter.
+
+Supports:
+
+* ✅ Android
+* ✅ iOS
+
+Single codebase for both platforms.
+
+---
+
+# 👤 User Interface
+
+The User Interface is intended for fleet managers and general users.
+
+### Dashboard
+
+Displays:
+
+* Total registered vehicles
+* Vehicle counts by category
+* Active tracking count
+
+Provides quick navigation actions.
+
+---
+
+### Live Tracking Map
+
+Uses:
+
+* OpenStreetMap
+* flutter_map
+
+Features:
+
+* Custom markers by vehicle type
+* Real-time updates
+* Vehicle detail bottom sheet
+
+---
+
+### Vehicle List
+
+Features:
+
+* Search by driver name
+* Filter by vehicle type
+* Vehicle information panel
+
+Displays:
+
+* Driver name
+* Phone
+* Registration number
+* Tracking status
+
+---
+
+# 🚚 Driver Interface
+
+Designed for vehicle owners/drivers.
+
+---
+
+## Driver Registration
+
+Collects:
+
+* Name
+* Email
+* Phone
+
+Data is stored in the Firestore **drivers** collection.
+
+---
+
+## Driver Dashboard
+
+Displays:
+
+* Driver profile
+* Registered vehicles
+* Current tracking status
+* Live coordinates
+
+---
+
+## Vehicle Management
+
+Drivers can:
+
+* Add vehicles
+* Edit vehicles
+
+Supported vehicle types:
+
+* Car
+* Motorcycle
+* Rickshaw
+* CNG
+* Delivery Vehicle
+* Other
+
+---
+
+## Tracking Control
+
+Drivers can:
+
+* Start tracking
+* Stop tracking
+
+---
+
+# 🔗 Vehicle-Driver Relationship
+
+The project uses a **Foreign Key** relationship.
+
+Each vehicle document contains:
+
+```text
+driverId
+```
+
+When a driver creates a vehicle:
+
+```
+Vehicle
+      │
+driverId
+      │
+      ▼
+Driver
+```
+
+The map combines data from:
+
+* drivers
+* vehicles
+* locations
+
+using **StreamZip**, allowing each vehicle to be matched with its assigned driver.
+
+---
+
+# 📍 Live Tracking Simulation
+
+Since this is an assessment project, GPS hardware is replaced with a realistic software simulation.
+
+### Workflow
+
+1. Start from central Dhaka coordinates
+
+```
+Latitude: 23.8103
+Longitude: 90.4125
+```
+
+1. Every **3 seconds**, `Stream.periodic` emits a new event.
+
+2. A small random offset
+
+```
+-0.0005
+to
++0.0005
+```
+
+is added to latitude and longitude.
+
+1. Updated coordinates are written to Firestore.
+
+2. The User Interface listens to Firestore snapshots and updates the vehicle marker in real time.
+
+---
+
+# ⚠️ Limitations
+
+### Authentication
+
+Firebase Authentication is intentionally omitted for simplicity.
+
+Drivers register using a simple form.
+
+---
+
+### Simulated Movement
+
+Vehicles move using a random walk.
+
+They do not follow actual road networks.
+
+---
+
+### Location History
+
+Each vehicle overwrites its latest location.
+
+A production-ready system would store historical coordinates to support route playback and polyline rendering.
+
+---
+
+### Offline Support
+
+Offline caching is not implemented.
+
+An active internet connection is required.
+
+---
+
+# 📄 License
+
+This project was developed solely for the **Rio Deep Technologies Assessment** and is intended for demonstration and evaluation purposes.

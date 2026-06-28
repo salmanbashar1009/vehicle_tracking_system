@@ -11,7 +11,7 @@ import '../../../tracking/presentation/bloc/tracking_state.dart';
 import '../../../vehicle/presentation/bloc/vehicle_event.dart';
 import '../../../vehicle/presentation/bloc/vehicle_state.dart';
 import '../widgets/driver_info_card.dart';
-import '../widgets/tracking_status_indicator.dart';
+import '../../../tracking/presentation/widgets/tracking_status_indicator.dart';
 
 class DriverDashboardScreen extends StatelessWidget {
   const DriverDashboardScreen({super.key});

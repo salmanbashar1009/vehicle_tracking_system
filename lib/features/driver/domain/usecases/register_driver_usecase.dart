@@ -6,7 +6,7 @@ import 'package:vehicle_tracking_system/features/driver/domain/repositories/driv
 class RegisterDriverUseCase {
   final DriverRepository repository;
 
-  RegisterDriverUseCase(this.repository);
+  RegisterDriverUseCase({required this.repository});
 
   Future<Either<Failure, DriverEntity>> call(DriverEntity driver) {
     return repository.registerDriver(driver);

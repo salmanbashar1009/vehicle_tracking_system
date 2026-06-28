@@ -6,7 +6,7 @@ import 'package:vehicle_tracking_system/features/driver/domain/repositories/driv
 class UpdateDriverUseCase {
   final DriverRepository repository;
 
-  UpdateDriverUseCase(this.repository);
+  UpdateDriverUseCase({required this.repository});
 
   Future<Either<Failure, DriverEntity>> call(DriverEntity driver) {
     return repository.updateDriver(driver);

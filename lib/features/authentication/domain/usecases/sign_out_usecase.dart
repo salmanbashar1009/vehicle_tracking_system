@@ -5,7 +5,7 @@ import 'package:vehicle_tracking_system/features/authentication/domain/repositor
 class SignOutUseCase {
   final AuthRepository repository;
 
-  SignOutUseCase(this.repository);
+  SignOutUseCase({required this.repository});
 
   Future<Either<Failure, void>> call() {
     return repository.signOut();

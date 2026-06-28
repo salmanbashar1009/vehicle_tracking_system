@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vehicle_tracking_system/features/tracking/domain/entities/location_entity.dart';
 
+import 'coordinate_display.dart';
+
 class TrackingStatusIndicator extends StatelessWidget {
   final bool isActive;
   final String? vehicleId;

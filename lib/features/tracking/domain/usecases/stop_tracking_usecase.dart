@@ -5,7 +5,7 @@ import 'package:vehicle_tracking_system/features/tracking/domain/repositories/tr
 class StopTrackingUseCase {
   final TrackingRepository repository;
 
-  StopTrackingUseCase(this.repository);
+  StopTrackingUseCase({required this.repository});
 
   Future<Either<Failure, void>> call(String vehicleId) {
     return repository.stopTracking(vehicleId);

@@ -6,7 +6,7 @@ import 'package:vehicle_tracking_system/features/vehicle/domain/repositories/veh
 class GetVehicleUseCase {
   final VehicleRepository repository;
 
-  GetVehicleUseCase(this.repository);
+  GetVehicleUseCase({required this.repository});
 
   Future<Either<Failure, VehicleEntity>> call(String id) {
     return repository.getVehicle(id);

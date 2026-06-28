@@ -6,7 +6,7 @@ import 'package:vehicle_tracking_system/features/authentication/domain/repositor
 class SignUpUseCase {
   final AuthRepository repository;
 
-  SignUpUseCase(this.repository);
+  SignUpUseCase({required this.repository});
 
   Future<Either<Failure, UserEntity>> call({
     required String email,

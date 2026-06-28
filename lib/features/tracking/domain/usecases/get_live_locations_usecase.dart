@@ -4,7 +4,7 @@ import 'package:vehicle_tracking_system/features/tracking/domain/repositories/tr
 class GetLiveLocationsUseCase {
   final TrackingRepository repository;
 
-  GetLiveLocationsUseCase(this.repository);
+  GetLiveLocationsUseCase({required this.repository});
 
   Stream<Map<String, LocationEntity>> call() {
     return repository.getAllLiveLocations();

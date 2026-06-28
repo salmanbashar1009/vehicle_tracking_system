@@ -6,7 +6,7 @@ import 'package:vehicle_tracking_system/features/vehicle/domain/repositories/veh
 class AddVehicleUseCase {
   final VehicleRepository repository;
 
-  AddVehicleUseCase(this.repository);
+  AddVehicleUseCase({required this.repository});
 
   Future<Either<Failure, VehicleEntity>> call(VehicleEntity vehicle) {
     return repository.addVehicle(vehicle);

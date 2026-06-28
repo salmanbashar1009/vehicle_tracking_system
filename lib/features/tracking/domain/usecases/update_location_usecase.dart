@@ -7,7 +7,7 @@ import 'package:vehicle_tracking_system/features/tracking/domain/repositories/tr
 class UpdateLocationUseCase {
   final TrackingRepository repository;
 
-  UpdateLocationUseCase(this.repository);
+  UpdateLocationUseCase({required this.repository});
 
   Future<Either<Failure, void>> call(LocationEntity location) {
     return repository.updateLocation(location);

@@ -63,8 +63,10 @@ Future<void> configureDependencies() async {
   // --- BLoCs ---
   sl.registerFactory(() => AuthBloc(
     signInUseCase: sl(),
-    signUpUseCase: sl(),
-    signOutUseCase: sl(),
+    // signUpUseCase: sl(),
+    // signOutUseCase: sl(),
+    signUpUseCase: SignUpUseCase(sl()),     // temporary
+    signOutUseCase: SignOutUseCase(sl()),   // temporary
   ));
 
   // sl.registerFactory(() => DriverBloc(

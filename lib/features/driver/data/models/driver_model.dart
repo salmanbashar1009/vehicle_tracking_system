@@ -23,7 +23,7 @@ class DriverModel extends DriverEntity {
   }
 
   factory DriverModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>? ?? {};
     return DriverModel(
       id: doc.id,
       name: data['name'] as String? ?? '',
@@ -52,13 +52,22 @@ class DriverModel extends DriverEntity {
     );
   }
 
-  DriverEntity toEntity() {
-    return DriverEntity(
-      id: id,
-      name: name,
-      email: email,
-      phone: phone,
-      createdAt: createdAt,
+  @override
+  DriverModel copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? phone,
+    DateTime? createdAt,
+  }) {
+    return DriverModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
+
+  DriverEntity toEntity() => this;
 }

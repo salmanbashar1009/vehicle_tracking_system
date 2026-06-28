@@ -5,6 +5,7 @@ import 'package:vehicle_tracking_system/features/authentication/presentation/blo
 import 'package:vehicle_tracking_system/features/authentication/presentation/widgets/auth_button.dart';
 import 'package:vehicle_tracking_system/features/authentication/presentation/widgets/auth_text_field.dart';
 
+import '../../../../core/utils/seed_data.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 
@@ -157,9 +158,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 16),
                     OutlinedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         // Skip authentication for prototype
-                        context.go('/user/dashboard');
+                        try {
+                          await seedDummyData();
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Dummy data seeded! Now click Skip Login.')),
+                            );
+                            context.go('/user/dashboard');
+                          }
+                        } catch (e) {
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Seeding failed: $e')),
+                            );
+                          }
+                        }
                       },
                       child: const Text('Skip Login (Demo)'),
                     ),

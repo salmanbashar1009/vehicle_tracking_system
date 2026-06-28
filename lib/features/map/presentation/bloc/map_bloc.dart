@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vehicle_tracking_system/features/map/domain/repositories/map_repository.dart';
@@ -6,6 +7,8 @@ import 'map_state.dart';
 
 class MapBloc extends Bloc<MapEvent, MapState> {
   final MapRepository mapRepository;
+
+  StreamSubscription? _vehiclesSubscription; // ← Important
 
   MapBloc({required this.mapRepository}) : super(MapInitial()) {
     on<LoadMapDataEvent>(_onLoadMapData);
@@ -22,6 +25,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       ) async {
     emit(MapLoading());
 
+    // Cancel previous subscription if exists
+    await _vehiclesSubscription?.cancel();
+
     final result = await mapRepository.getAllVehiclesWithLocations();
 
     result.fold(
@@ -29,9 +35,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
           (vehicles) => emit(MapLoaded(vehicles: vehicles)),
     );
 
-    // Also listen to stream for real-time updates
-    mapRepository.getVehiclesWithLocationsStream().listen(
+    // Set up real-time listener
+    _vehiclesSubscription = mapRepository.getVehiclesWithLocationsStream().listen(
           (vehicles) {
+        if (isClosed || emit.isDone) return; // Safety check
+
         if (state is MapLoaded) {
           emit((state as MapLoaded).copyWith(vehicles: vehicles));
         } else {
@@ -39,40 +47,28 @@ class MapBloc extends Bloc<MapEvent, MapState> {
         }
       },
       onError: (error) {
+        if (isClosed || emit.isDone) return;
         emit(MapError(error.toString()));
       },
     );
   }
 
-  void _onMapReady(
-      MapReadyEvent event,
-      Emitter<MapState> emit,
-      ) {
-    // Map is ready, could perform initial actions
-  }
+  // Other handlers remain the same
+  void _onMapReady(MapReadyEvent event, Emitter<MapState> emit) {}
 
-  void _onSelectVehicle(
-      SelectVehicleEvent event,
-      Emitter<MapState> emit,
-      ) {
+  void _onSelectVehicle(SelectVehicleEvent event, Emitter<MapState> emit) {
     if (state is MapLoaded) {
       emit((state as MapLoaded).copyWith(selectedVehicleId: event.vehicleId));
     }
   }
 
-  void _onDeselectVehicle(
-      DeselectVehicleEvent event,
-      Emitter<MapState> emit,
-      ) {
+  void _onDeselectVehicle(DeselectVehicleEvent event, Emitter<MapState> emit) {
     if (state is MapLoaded) {
       emit((state as MapLoaded).copyWith(clearSelection: true));
     }
   }
 
-  void _onCenterOnVehicle(
-      CenterOnVehicleEvent event,
-      Emitter<MapState> emit,
-      ) {
+  void _onCenterOnVehicle(CenterOnVehicleEvent event, Emitter<MapState> emit) {
     if (state is MapLoaded) {
       emit((state as MapLoaded).copyWith(
         selectedVehicleId: event.vehicleId,
@@ -81,12 +77,15 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     }
   }
 
-  void _onMoveMap(
-      MoveMapEvent event,
-      Emitter<MapState> emit,
-      ) {
+  void _onMoveMap(MoveMapEvent event, Emitter<MapState> emit) {
     if (state is MapLoaded) {
       emit((state as MapLoaded).copyWith(clearCenter: true));
     }
+  }
+
+  @override
+  Future<void> close() async {
+    await _vehiclesSubscription?.cancel();
+    await super.close();
   }
 }

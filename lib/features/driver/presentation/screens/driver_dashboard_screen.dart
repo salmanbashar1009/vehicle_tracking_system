@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vehicle_tracking_system/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:vehicle_tracking_system/features/driver/presentation/bloc/driver_bloc.dart';
 import 'package:vehicle_tracking_system/features/tracking/presentation/bloc/tracking_bloc.dart';
 import 'package:vehicle_tracking_system/features/vehicle/presentation/bloc/vehicle_bloc.dart';
+import 'package:vehicle_tracking_system/features/vehicle/domain/entities/vehicle_entity.dart';
 
 import '../../../authentication/presentation/bloc/auth_event.dart';
 import '../../../tracking/presentation/bloc/tracking_state.dart';
-import '../../../vehicle/domain/entities/vehicle_entity.dart';
 import '../../../vehicle/presentation/bloc/vehicle_event.dart';
 import '../../../vehicle/presentation/bloc/vehicle_state.dart';
 import '../widgets/driver_info_card.dart';
@@ -321,4 +320,3 @@ class _VehicleListItem extends StatelessWidget {
     );
   }
 }
-

@@ -18,10 +18,12 @@ class TrackingStatusIndicator extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isActive ? Colors.green.shade50 : Colors.grey.shade100,
+        color: isActive 
+            ? Colors.green.withValues(alpha: 0.1) 
+            : Colors.grey.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isActive ? Colors.green.shade200 : Colors.grey.shade300,
+          color: isActive ? Colors.green.shade300 : Colors.grey.shade300,
         ),
       ),
       child: Row(
@@ -29,7 +31,9 @@ class TrackingStatusIndicator extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: isActive ? Colors.green.shade100 : Colors.grey.shade200,
+              color: isActive 
+                  ? Colors.green.withValues(alpha: 0.2) 
+                  : Colors.grey.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
             child: Icon(
